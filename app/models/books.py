@@ -9,13 +9,17 @@ from app import db
 class Booking(db.Model):
     __tablename__ = "bookings"
 
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    id          = db.Column(db.Integer, primary_key=True)
+    user_id     = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     schedule_id = db.Column(db.Integer, db.ForeignKey("diving_schedules.id"), nullable=False)
-    slots = db.Column(db.Integer, nullable=False, default=1)
-    notes = db.Column(db.String(500), nullable=True)
-    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+    slots       = db.Column(db.Integer, nullable=False, default=1)
+    notes       = db.Column(db.String(500), nullable=True)
+    original_price   = db.Column(db.Float, nullable=False, default=0.0)
+    discount_applied = db.Column(db.Float, nullable=False, default=0.0)
+    final_price      = db.Column(db.Float, nullable=False, default=0.0)
+    created_at   = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     is_cancelled = db.Column(db.Boolean, default=False)
+
     user = db.relationship("User", backref=db.backref("bookings", lazy=True))
 
     def to_dict(self) -> dict:
@@ -28,6 +32,9 @@ class Booking(db.Model):
             "schedule": self.schedule.to_dict() if self.schedule else None,
             "slots": self.slots,
             "notes": self.notes,
+            "original_price": self.original_price,
+            "discount_applied": self.discount_applied,
+            "final_price": self.final_price,
             "created_at": self.created_at.isoformat(),
             "is_cancelled": self.is_cancelled,
         }
