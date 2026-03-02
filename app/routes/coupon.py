@@ -216,7 +216,7 @@ def generate_bulk_coupons():
         "codes": [c.code for c in generated],  
     }), 201
 
-@admin_coupon_bp("/coupons", methods=["GET"])
+@admin_coupon_bp.route("/coupons", methods=["GET"])
 @admin_required
 def list_coupons():
     """
@@ -261,7 +261,7 @@ def get_coupon(coupon_id):
         "redemptions": [r.to_dict() for r in redemptions],
     }), 200
 
-@admin_coupon_bp("/coupons/<int:coupon_id>", methods=["PUT"])
+@admin_coupon_bp.route("/coupons/<int:coupon_id>", methods=["PUT"])
 @admin_required
 def update_coupon(coupon_id):
     """Update a coupon's settings."""
@@ -303,7 +303,7 @@ def deactivate_coupon(coupon_id):
 
     return jsonify({"message": f"Coupon '{coupon.code}' has been deactivated"}), 200
 
-@coupon_bp.route("/coupons/validate", methods["POST"])
+@coupon_bp.route("/coupons/validate", methods=["POST"])
 @jwt_required
 def validate_coupon():
     """

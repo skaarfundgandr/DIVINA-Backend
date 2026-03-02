@@ -19,11 +19,11 @@ class Coupon(db.Model):
     store_id = db.Column(db.Integer, db.ForeignKey("stores.id"), nullable=True)
     schedule_id = db.Column(db.Integer, db.ForeignKey("diving_schedules.id"), nullable=True)
 
-    max_uses = db.Column(db.Integer, nullale=True)
+    max_uses = db.Column(db.Integer, nullable=True)
     uses_per_user = db.Column(db.Integer, nullable=False, default=1)
     total_used = db.Column(db.Integer, nullable=False, default=0)
 
-    valid_from = db.Column(db.DateTime, nullable=False, dafault=lambda: datetime.now(timezone.utc))
+    valid_from = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now(timezone.utc))
     valid_until = db.Column(db.DateTime, nullable=True)
 
     created_by = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
