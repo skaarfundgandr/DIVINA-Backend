@@ -29,6 +29,7 @@ def create_app(config_name="default"):
     from app.routes.store import store_bp
     from app.routes.coupon import admin_coupon_bp, coupon_bp
     from app.routes.weather import weather_bp
+    from app.routes.identify import identify_bp
     
     app.register_blueprint(auth_bp, url_prefix="/api/auth")
     app.register_blueprint(protected_bp, url_prefix="/api")
@@ -38,6 +39,7 @@ def create_app(config_name="default"):
     app.register_blueprint(coupon_bp, url_prefix="/api")
     app.register_blueprint(admin_coupon_bp, url_prefix="/api/admin")
     app.register_blueprint(weather_bp, url_prefix="/api")
+    app.register_blueprint(identify_bp, url_prefix="/api")
 
     with app.app_context():
         db.create_all()
