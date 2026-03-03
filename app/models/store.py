@@ -22,6 +22,8 @@ class Store(db.Model):
     owner = db.relationship("User", backref=db.backref("stores", lazy=True))
     schedules = db.relationship("DivingSchedule", backref="store", lazy=True, cascade="all, delete-orphan")
 
+    type = db.Column(db.String(50), nullable=False)#popular or not  
+
     def to_dict(self, include_schedules=False):
         data = {
             "id": self.id,
@@ -35,7 +37,9 @@ class Store(db.Model):
             "owner_id": self.owner_id,
             "owner": self.owner.full_name if self.owner else None,
             "created_at": self.created_at.isoformat(),
+            "type": self.type
         }
+
         if include_schedules:
             data["schedules"] = [s.to_dict() for s in self.schedules if s.is_active]
         return data
