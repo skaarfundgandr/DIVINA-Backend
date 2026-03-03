@@ -72,11 +72,21 @@ def marine_weather():
             params={"key": api_key, "q": location, "days": days, "tides": tides},
             timeout=10,
         )
-        data = resp.json()
 
         if resp.status_code != 200:
-            return jsonify({"error": data.get("error", {}).get("message", "Weather API error")}), resp.status_code
+            # Try to parse JSON error details; fall back to a generic message on failure.
+            try:
+                error_data = resp.json()
+                message = error_data.get("error", {}).get("message", "Weather API error")
+            except ValueError:
+                message = "Weather API error"
+            return jsonify({"error": message}), resp.status_code
 
+        # Successful response: parse JSON body, handling invalid JSON explicitly.
+        try:
+            data = resp.json()
+        except ValueError:
+            return jsonify({"error": "Invalid response from Weather API"}), 502
         return jsonify(data), 200
 
     except requests.RequestException as e:
