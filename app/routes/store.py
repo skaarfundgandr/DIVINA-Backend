@@ -352,6 +352,8 @@ def update_schedule(store_id, schedule_id):
     if "date" in data:
         try:
             schedule.date = date.fromisoformat(data["date"])
+            if schedule.date < date.today():
+                return jsonify({"error": "Schedule date must be in the future"}), 400
         except ValueError:
             return jsonify({"error": "Invalid date format. Use YYYY-MM-DD"}), 400
     if "start_time" in data:
