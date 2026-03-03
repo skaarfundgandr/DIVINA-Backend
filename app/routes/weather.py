@@ -9,7 +9,7 @@ from flask import Blueprint, request, jsonify
 
 weather_bp = Blueprint("weather", __name__)
 
-WEATHER_API_BASE = "http://api.weatherapi.com/v1"
+WEATHER_API_BASE = "https://api.weatherapi.com/v1"
 
 
 def _get_api_key():
